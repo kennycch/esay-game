@@ -13,6 +13,10 @@ func (g *Game) Start() {
 	MapToTree()
 	// 初始化任务分配器
 	client.TaskInit(logic.Listen)
+	// 监听连接事件
+	connectEvent()
+	// 监听断开事件
+	disconnectEvent()
 }
 
 func (g *Game) Priority() uint32 {

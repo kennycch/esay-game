@@ -13,7 +13,7 @@ func GetErrorMsg(errorCode pb.ErrorCode) *pb.Msg {
 	}
 	b, _ := proto.Marshal(body)
 	return &pb.Msg{
-		Cmd:  pb.CmdId_Error,
+		Cmd:  pb.CmdId_CMD_Error,
 		Body: b,
 	}
 }

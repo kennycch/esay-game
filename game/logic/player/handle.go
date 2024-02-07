@@ -10,7 +10,7 @@ import (
 // 心跳
 func HeartBeat(task *client.Task) {
 	msg := &pb.Msg{
-		Cmd:  pb.CmdId_HeartBeat,
+		Cmd:  pb.CmdId_CMD_HeartBeat,
 		Time: general.NowUnix(),
 	}
 	client.PushByPlayer(task.Player.PlayerId, msg)

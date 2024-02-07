@@ -7,6 +7,7 @@ import (
 	"easy-game/lifecycle"
 	"fmt"
 
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/kennycch/gotools/worker"
 )
@@ -17,6 +18,8 @@ func (n *Net) Start() {
 	route = gin.Default()
 	// 允许跨域
 	route.Use(middleware.Cors())
+	// 注册pprof
+	pprof.Register(route, "pprof")
 	// 注册Http路由
 	httpRoute()
 	// websocket处理

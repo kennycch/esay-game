@@ -20,16 +20,23 @@ var (
 	taskMap = []Task{
 		// 心跳
 		{
-			Cmd:         pb.CmdId_HeartBeat,
+			Cmd:         pb.CmdId_CMD_HeartBeat,
 			ChannelType: client.PlayerType,
 			Handle:      player.HeartBeat,
 		},
 		// 背包更变
 		{
-			Cmd:           pb.CmdId_BagChange,
+			Cmd:           pb.CmdId_CMD_BagChange,
 			ChannelType:   client.PlayerType,
 			ConnBlackList: true,
 			Handle:        bag.BagChange,
 		},
 	}
+	// 连接事件集
+	connectEvents = []func(playerId string){
+		// 发送玩家信息
+		player.PlayerInfo,
+	}
+	// 断开事件集
+	disconnectEvents = []func(playerId string){}
 )

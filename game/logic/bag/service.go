@@ -20,13 +20,13 @@ func AsyncChangeItems(playerId string, items []*pb.Item) {
 	}
 	channel := client.GetTaskChannle(channelTask)
 	// 准备请求信息
-	playerBagChange := &pb.PlayerBagChange{
+	bagChange := &pb.BagChange{
 		PlayerId: playerId,
 		Changes:  items,
 	}
-	b, _ := proto.Marshal(playerBagChange)
+	b, _ := proto.Marshal(bagChange)
 	msg := &pb.Msg{
-		Cmd:  pb.CmdId_BagChange,
+		Cmd:  pb.CmdId_CMD_BagChange,
 		Body: b,
 	}
 	task := &client.Task{

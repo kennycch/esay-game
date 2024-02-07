@@ -74,4 +74,8 @@ var (
 	channelTaskMap = map[pb.CmdId]ChannelTask{}
 	// 客户端请求黑名单（注册到这里的协议禁止客户端请求，仅供内部调用）
 	connBlack = map[pb.CmdId]struct{}{}
+	// 连接事件管道
+	ConnectChan = make(chan string)
+	// 关闭事件管道
+	DisconnectChan = make(chan string)
 )

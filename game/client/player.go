@@ -1,7 +1,6 @@
 package client
 
 import (
-	"easy-game/game/errors"
 	"easy-game/pb"
 	"time"
 
@@ -12,8 +11,17 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// 监听客户端消息
 func (p *PlayerConn) Listen() {
-	p.ReadMsg()
+	// 先出列管道，避免监听时阻塞
+	p.handleMsg()
+	// 监听客户端消息
+	p.readMsg()
+}
+
+// 处理信息
+func (p *PlayerConn) handleMsg() {
+	// 开启协程出列管道
 	worker.AddTask(func() {
 	label:
 		for {
@@ -25,9 +33,7 @@ func (p *PlayerConn) Listen() {
 				break label
 			// 客户端多点登录
 			case <-p.Reconnet:
-				msg := errors.GetErrorMsg(pb.ErrorCode_EC_OtherClient)
-				PushByPlayer(p.PlayerId, msg)
-				p.Conn.Close()
+				p.reconnetHandle()
 				break label
 			// 客户端发送信息
 			case msg := <-p.Msg:
@@ -50,8 +56,14 @@ func (p *PlayerConn) Listen() {
 	})
 }
 
+func (p *PlayerConn) reconnetHandle() {
+	p.Lock.Lock()
+	defer p.Lock.Unlock()
+	PushConnetError(p.Conn, pb.ErrorCode_EC_OtherClient)
+}
+
 // 读取信息
-func (p *PlayerConn) ReadMsg() {
+func (p *PlayerConn) readMsg() {
 	worker.AddTask(func() {
 		for {
 			// 设置心跳时间

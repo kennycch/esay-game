@@ -11,25 +11,26 @@ import (
 // 背包变更
 func BagChange(task *client.Task) {
 	// 解析请求
-	playerBagChange := &pb.PlayerBagChange{}
-	if err := proto.Unmarshal(task.Msg.Body, playerBagChange); err != nil {
+	bagChange := &pb.BagChange{}
+	if err := proto.Unmarshal(task.Msg.Body, bagChange); err != nil {
 		return
 	}
 	// 加载玩家信息
 	playerData := player.GetPlayer(task.Player.PlayerId, BagChangeFields)
 	// 开始处理背包
-	for _, item := range playerBagChange.Changes {
-		if _, ok := playerData.Bag[int(item.ItemId)]; ok {
-			playerData.Bag[int(item.ItemId)].Num += int(item.Num)
+	for _, item := range bagChange.Changes {
+		if _, ok := playerData.Bag[item.ItemId]; ok {
+			playerData.Bag[item.ItemId].Num += item.Num
 		} else {
-			playerData.Bag[int(item.ItemId)] = &player.Item{
-				ItemId: int(item.ItemId),
-				Num:    int(item.Num),
+			playerData.Bag[item.ItemId] = &pb.Item{
+				ItemId: item.ItemId,
+				Num:    item.Num,
+				ItemType: item.ItemType,
 			}
 		}
 	}
 	// 保存变更
 	playerData.SaveValus()
 	// 通知客户端变更
-	playerData.PushBagChange(playerBagChange.Changes)
+	playerData.PushBagChange(bagChange.Changes)
 }

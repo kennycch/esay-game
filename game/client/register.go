@@ -33,7 +33,7 @@ func WebsocketUpgrader(ctx *gin.Context) {
 		Reconnet:  make(chan bool),
 		Disconnet: make(chan bool),
 		Msg:       make(chan *pb.Msg),
-		PlayerId:  "1",
+		PlayerId:  "test001",
 		Lock:      &sync.Mutex{},
 	}
 	RegisterTree(playerConn)
@@ -48,6 +48,8 @@ func RegisterTree(playerConn *PlayerConn) {
 		oldConn.Reconnet <- true
 	}
 	WsConnTree.Conns[playerConn.PlayerId] = playerConn
+	// 触发连接事件
+	ConnectChan <- playerConn.PlayerId
 }
 
 // 客户端注销注册
@@ -55,6 +57,8 @@ func UnRegisterTree(playerConn *PlayerConn) {
 	WsConnTree.Lock.Lock()
 	defer WsConnTree.Lock.Unlock()
 	delete(WsConnTree.Conns, playerConn.PlayerId)
+	// 触发断开事件
+	DisconnectChan <- playerConn.PlayerId
 }
 
 // 未注册客户端前发送异常
