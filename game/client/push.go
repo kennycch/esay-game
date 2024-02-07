@@ -9,37 +9,43 @@ import (
 )
 
 // 发送信息给玩家
-func PushByPlayer(playerId string, msg *pb.Msg) {
-	msg.Time = general.NowMilli()
-	if player := getPlayer(playerId); player != nil {
+func PushByPlayer(playerId string, cmd pb.CmdId, resp proto.Message) {
+	msg := &pb.Msg{
+		Cmd:  cmd,
+		Time: general.NowMilli(),
+	}
+	if resp != nil {
+		if b, err := proto.Marshal(resp); err == nil {
+			msg.Body = b
+		}
+	}
+	m, _ := proto.Marshal(msg)
+	WsConnTree.Lock.RLock()
+	defer WsConnTree.Lock.RUnlock()
+	if player, ok := WsConnTree.Conns[playerId]; ok {
 		player.Lock.Lock()
 		defer player.Lock.Unlock()
-		if b, err := proto.Marshal(msg); err == nil {
-			player.Conn.WriteMessage(websocket.BinaryMessage, b)
-		}
+		player.Conn.WriteMessage(websocket.BinaryMessage, m)
 	}
 }
 
 // 推送全服
-func PushAll(msg *pb.Msg) {
-	msg.Time = general.NowMilli()
-	if b, err := proto.Marshal(msg); err == nil {
-		WsConnTree.Lock.Lock()
-		defer WsConnTree.Lock.Unlock()
-		for _, player := range WsConnTree.Conns {
-			player.Lock.Lock()
-			defer player.Lock.Unlock()
-			player.Conn.WriteMessage(websocket.BinaryMessage, b)
+func PushAll(cmd pb.CmdId, resp proto.Message) {
+	msg := &pb.Msg{
+		Cmd:  cmd,
+		Time: general.NowMilli(),
+	}
+	if resp != nil {
+		if b, err := proto.Marshal(resp); err == nil {
+			msg.Body = b
 		}
 	}
-}
-
-// 获取玩家客户端
-func getPlayer(playerId string) *PlayerConn {
-	WsConnTree.Lock.Lock()
-	defer WsConnTree.Lock.Unlock()
-	if player, ok := WsConnTree.Conns[playerId]; ok {
-		return player
+	m, _ := proto.Marshal(msg)
+	WsConnTree.Lock.RLock()
+	defer WsConnTree.Lock.RUnlock()
+	for _, player := range WsConnTree.Conns {
+		player.Lock.Lock()
+		defer player.Lock.Unlock()
+		player.Conn.WriteMessage(websocket.BinaryMessage, m)
 	}
-	return nil
 }

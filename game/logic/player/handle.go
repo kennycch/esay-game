@@ -3,15 +3,9 @@ package player
 import (
 	"easy-game/game/client"
 	"easy-game/pb"
-
-	"github.com/kennycch/gotools/general"
 )
 
 // 心跳
 func HeartBeat(task *client.Task) {
-	msg := &pb.Msg{
-		Cmd:  pb.CmdId_CMD_HeartBeat,
-		Time: general.NowUnix(),
-	}
-	client.PushByPlayer(task.Player.PlayerId, msg)
+	client.PushByPlayer(task.Player.PlayerId, pb.CmdId_CMD_HeartBeat, nil)
 }

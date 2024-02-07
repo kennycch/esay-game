@@ -36,7 +36,7 @@ type PlayerConn struct {
 // 客户端注册树
 type ConnTree struct {
 	Conns map[string]*PlayerConn
-	Lock  *sync.Mutex
+	Lock  *sync.RWMutex
 }
 
 type ChannleType uint8
@@ -60,7 +60,7 @@ var (
 	// 注册树
 	WsConnTree = &ConnTree{
 		Conns: map[string]*PlayerConn{},
-		Lock:  &sync.Mutex{},
+		Lock:  &sync.RWMutex{},
 	}
 	// 玩家任务分配映射
 	playerChannels = make(map[string]chan *Task, 0)

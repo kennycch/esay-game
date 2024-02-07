@@ -1,4 +1,6 @@
 .vscode
-env.ini
 run_time
 proto
+*.ini
+*.exe
+*_test.go
