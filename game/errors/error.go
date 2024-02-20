@@ -7,9 +7,13 @@ import (
 )
 
 func GetErrorMsg(errorCode pb.ErrorCode) *pb.Msg {
+	message := ""
+	if msg, ok := Errors[errorCode]; ok {
+		message = msg
+	}
 	body := &pb.ErrorBody{
 		Code:    errorCode,
-		Message: pb.ErrorCode_name[int32(errorCode)],
+		Message: message,
 	}
 	b, _ := proto.Marshal(body)
 	return &pb.Msg{
