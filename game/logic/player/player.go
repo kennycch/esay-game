@@ -4,6 +4,7 @@ import (
 	"easy-game/common/redis"
 	"easy-game/pb"
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/kennycch/gotools/general"
@@ -11,9 +12,13 @@ import (
 
 // 获取用户信息
 func GetPlayer(userId string, fields []string) *HPlayer {
+	// 强制添加Id字段
+	if !general.InArray(fields, ID) {
+		fields = append(fields, ID)
+	}
 	// 获取Redis数据
 	key := redis.GetPlayerKey(userId)
-	datas, _ := redis.RD.HGetAll(key).Result()
+	datas := redis.RD.HMGet(key, fields...).Val()
 	// 赋值到用户
 	playerData := newHPlayer(key, fields)
 	playerData.formatHPlayer(datas)
@@ -40,11 +45,14 @@ func (h *HPlayer) SaveValus() {
 }
 
 // 赋值对象
-func (h *HPlayer) formatHPlayer(datas map[string]string) {
-	for _, field := range h.hashData.Fields {
-		if value, ok := datas[field]; ok {
-			h.formatValue(field, value)
+func (h *HPlayer) formatHPlayer(datas []interface{}) {
+	for index, field := range h.hashData.Fields {
+		value := fmt.Sprint(datas[index])
+		// 处理没有数据的
+		if value == "<nil>" {
+			value = ""
 		}
+		h.formatValue(field, value)
 	}
 }
 
