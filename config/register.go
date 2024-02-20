@@ -1,7 +1,7 @@
 package config
 
 import (
-	"easy-game/lifecycle"
+	"easy-game/common/lifecycle"
 	"flag"
 
 	"github.com/go-ini/ini"

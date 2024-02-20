@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"easy-game/lifecycle"
+	"easy-game/common/lifecycle"
 )
 
 type Redis struct{}

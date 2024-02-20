@@ -1,10 +1,10 @@
 package net
 
 import (
+	"easy-game/common/lifecycle"
 	"easy-game/common/net/middleware"
 	"easy-game/config"
 	"easy-game/game/client"
-	"easy-game/lifecycle"
 	"fmt"
 
 	"github.com/gin-contrib/pprof"

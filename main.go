@@ -1,18 +1,16 @@
 package main
 
 import (
-	"easy-game/common/logger"
+	"easy-game/common/lifecycle"
+	"easy-game/common/log"
 	"easy-game/common/net"
 	"easy-game/common/redis"
 	"easy-game/config"
 	"easy-game/game"
-	"easy-game/lifecycle"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/kennycch/gotools/log"
 )
 
 func main() {
@@ -31,7 +29,7 @@ func register() {
 	// 加载配置
 	lifecycle.AddLifecycle(config.NewConfig())
 	// 初始化日志
-	lifecycle.AddLifecycle(logger.NewLogger())
+	lifecycle.AddLifecycle(log.NewLogRegister())
 	// 初始化游戏对象
 	lifecycle.AddLifecycle(game.NewGame())
 	// 开启服务
