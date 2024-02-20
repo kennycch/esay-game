@@ -3,11 +3,9 @@ package net
 import (
 	"easy-game/common/net/middleware"
 	"easy-game/config"
-	"easy-game/game/client"
 	"easy-game/lifecycle"
 	"fmt"
 
-	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/kennycch/gotools/worker"
 )
@@ -18,12 +16,10 @@ func (n *Net) Start() {
 	route = gin.Default()
 	// 允许跨域
 	route.Use(middleware.Cors())
-	// 注册pprof
-	pprof.Register(route, "pprof")
-	// 注册Http路由
-	httpRoute()
-	// websocket处理
-	websocketRoute(config.Http.WSRoute, client.WebsocketUpgrader)
+	// 注册路由
+	for _, service := range routeServices {
+		service.Route(route)
+	}
 	// 开启服务
 	worker.AddTask(func() {
 		route.Run(fmt.Sprintf(":%d", config.Http.Port))
