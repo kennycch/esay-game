@@ -2,6 +2,7 @@ package redis
 
 import (
 	"easy-game/config"
+	"easy-game/tools/log"
 	"fmt"
 
 	"github.com/go-redis/redis"
@@ -16,7 +17,7 @@ func RedisInit() {
 	})
 	_, err := con.Ping().Result()
 	if err != nil {
-		panic(err)
+		log.Panic(err.Error())
 	}
 	RD = con
 }

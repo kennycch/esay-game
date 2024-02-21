@@ -2,36 +2,16 @@ package log
 
 import (
 	"easy-game/config"
-	_config "easy-game/config"
-	"sync"
 	"time"
 
 	"github.com/IBM/sarama"
 	"github.com/rs/zerolog"
 )
 
-const (
-	chansize = 1000
-)
-
-var kafkaHooker kafkaHook
-var kafkaHookerOnce sync.Once
-
-type kafkaInfo struct {
-	serverTopic    string
-	statisticTopic string
-	producer       sarama.SyncProducer
-}
-
-type kafkaHook struct {
-	serverChan chan string
-	kafkaInfo  *kafkaInfo
-}
-
 func NewKafkaHooker() {
 	kafkaHookerOnce.Do(func() {
 		kafkaHooker = kafkaHook{
-			serverChan: make(chan string, 1000),
+			serverChan: make(chan string, chanSize),
 		}
 		if config.Log.RemoteEnable {
 			// 初始化kafka生产者
@@ -43,17 +23,17 @@ func NewKafkaHooker() {
 }
 
 func (kh *kafkaHook) initProducer() {
-	config := sarama.NewConfig()
-	config.Producer.RequiredAcks = sarama.WaitForAll
-	config.Producer.Retry.Max = 5
-	config.Producer.Return.Successes = true
-	producer, err := sarama.NewSyncProducer([]string{_config.Kafka.Host}, config)
+	conf := sarama.NewConfig()
+	conf.Producer.RequiredAcks = sarama.WaitForAll
+	conf.Producer.Retry.Max = 5
+	conf.Producer.Return.Successes = true
+	producer, err := sarama.NewSyncProducer([]string{config.Kafka.Host}, conf)
 	if err != nil {
 		Panic("kafka初始化失败")
 	}
 	kh.kafkaInfo = &kafkaInfo{
-		serverTopic:    _config.Kafka.ServerTopic,
-		statisticTopic: _config.Kafka.StatisticTopic,
+		serverTopic:    config.Kafka.ServerTopic,
+		statisticTopic: config.Kafka.StatisticTopic,
 		producer:       producer,
 	}
 }

@@ -1,12 +1,13 @@
 package main
 
 import (
-	"easy-game/common/lifecycle"
-	"easy-game/common/log"
-	"easy-game/common/net"
-	"easy-game/common/redis"
 	"easy-game/config"
 	"easy-game/game"
+	"easy-game/tools/cron"
+	"easy-game/tools/lifecycle"
+	"easy-game/tools/log"
+	"easy-game/tools/net"
+	"easy-game/tools/redis"
 	"os"
 	"os/signal"
 	"syscall"
@@ -36,6 +37,8 @@ func register() {
 	lifecycle.AddLifecycle(net.NewNet())
 	// Redis服务
 	lifecycle.AddLifecycle(redis.NewRedis())
+	// 定时任务
+	lifecycle.AddLifecycle(cron.NewCron())
 }
 
 // 信号监听

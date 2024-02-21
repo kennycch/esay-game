@@ -1,6 +1,6 @@
 .vscode
 run_time
+server-logs
 proto
 *.ini
 *.exe
-*_test.go

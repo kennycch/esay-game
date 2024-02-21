@@ -11,6 +11,7 @@ require (
 	github.com/gorilla/websocket v1.5.1
 	github.com/kennycch/gotools v1.0.10
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/rs/zerolog v1.32.0
 	github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b
 	go.uber.org/zap v1.19.1

@@ -9,11 +9,6 @@ import (
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 )
 
-const (
-	fileMaxage   = 7 * 24 * time.Hour
-	rotationTime = 24 * time.Hour
-)
-
 func newFile(directory string) *rotatelogs.RotateLogs {
 	d, err := time.ParseDuration("720h")
 	if err != nil {

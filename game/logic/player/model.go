@@ -1,8 +1,8 @@
 package player
 
 import (
-	"easy-game/common/redis"
 	"easy-game/pb"
+	"easy-game/tools/redis"
 )
 
 const (

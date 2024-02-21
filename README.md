@@ -19,10 +19,10 @@
 8.  由于proto buf文件为多项目共用文件，因此骨架中并没有包含proto buf源文件目录，使用骨架时请自行构建。
 9.  骨架中还缺少了游戏配置目录，由于每个游戏此部分差异较大因此也没有提供相应目录。若游戏配置为json文件，推荐使用github.com/kennycch/gotools/game_config来自动生成游戏配置包。
 10. 骨架已包含websocket连接事件和断开事件，需要处理更多业务直接在game/model.go中的connectEvents和disconnectEvents注册即可。
-11. 骨架中基本所有包都有model.go文件，建议包中所有变量、常量以及结构体都编写在此文件中。
+11. 骨架中几乎所有包都有model.go文件，建议包中所有变量、常量以及结构体都编写在此文件中。
 
 ## 一、目录结构：
-├─common<br/>
+├─tools<br/>
 │  ├─logger<br/>
 │  ├─net<br/>
 │  │  ├─http<br/>
@@ -47,14 +47,14 @@ main.go<br/>
 README.md<br/>
 
 ### 目录说明：
-1.  common: 工具包，所有需要用到的工具都建议摆放在此目录<br/>
-2.  common.logger：日志包，完成注册后直接调用github.com/kennycch/gotools/log即可<br/>
-3.  common.net：网络服务包<br/>
-4.  common.net.http：Http网络服务包，Http接口路由注册在此包完成<br/>
-5.  common.net.middleware：中间件包<br/>
-6.  common.net.pprof：pprof性能监测包<br/>
-7.  common.net.websocket：websocket路由注册包<br/>
-8.  common.redis：Redis包<br/>
+1.  tools: 工具包，所有需要用到的工具都建议摆放在此目录<br/>
+2.  tools.logger：日志包，完成注册后直接调用github.com/kennycch/gotools/log即可<br/>
+3.  tools.net：网络服务包<br/>
+4.  tools.net.http：Http网络服务包，Http接口路由注册在此包完成<br/>
+5.  tools.net.middleware：中间件包<br/>
+6.  tools.net.pprof：pprof性能监测包<br/>
+7.  tools.net.websocket：websocket路由注册包<br/>
+8.  tools.redis：Redis包<br/>
 9.  config：程序配置包<br/>
 10. game：游戏主业务包<br/>
 11. game.client：websocket客户端管理包<br/>

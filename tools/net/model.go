@@ -1,9 +1,9 @@
 package net
 
 import (
-	"easy-game/common/net/http"
-	"easy-game/common/net/pprof"
-	"easy-game/common/net/websocket"
+	"easy-game/tools/net/http"
+	"easy-game/tools/net/pprof"
+	"easy-game/tools/net/websocket"
 
 	"github.com/gin-gonic/gin"
 )

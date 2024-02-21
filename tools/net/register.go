@@ -1,9 +1,9 @@
 package net
 
 import (
-	"easy-game/common/lifecycle"
-	"easy-game/common/net/middleware"
 	"easy-game/config"
+	"easy-game/tools/lifecycle"
+	"easy-game/tools/net/middleware"
 	"fmt"
 
 	"github.com/gin-gonic/gin"

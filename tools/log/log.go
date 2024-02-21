@@ -8,21 +8,6 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type outputType string
-
-const (
-	stdoutType outputType = "stdout"
-	stderrType outputType = "stderr"
-	fileType   outputType = "file"
-)
-
-var logger *Logger
-
-type Logger struct {
-	log  zerolog.Logger
-	name string
-}
-
 func NewLogger() {
 	var zerologger zerolog.Logger
 	if config.App.Debug { // 如果是全局debug=true模式 则默认输出到标准输出以及kafka

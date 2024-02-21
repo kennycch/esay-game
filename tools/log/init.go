@@ -1,9 +1,8 @@
 package log
 
-import "easy-game/common/lifecycle"
+import "easy-game/tools/lifecycle"
 
-type LogRegister struct {
-}
+type LogRegister struct{}
 
 func (e *LogRegister) Start() {
 	NewKafkaHooker()

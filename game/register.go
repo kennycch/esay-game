@@ -1,9 +1,9 @@
 package game
 
 import (
-	"easy-game/common/lifecycle"
 	"easy-game/game/client"
 	"easy-game/game/logic"
+	"easy-game/tools/lifecycle"
 )
 
 type Game struct{}
